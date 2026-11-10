@@ -511,7 +511,7 @@ function escapeHtml(value){return String(value).replace(/[&<>"']/g,c=>({'&':'&am
 function closeSuccess(){successModal.classList.remove('open');document.body.style.overflow='';}
 
 successModal.addEventListener('click',e=>{if(e.target===successModal)closeSuccess()});
-function registrationShareText(){if(!lastRegistration)return '';const d=lastRegistration.details;const registeredAtText=new Intl.DateTimeFormat('en-IN',{dateStyle:'full',timeStyle:'short'}).format(lastRegistration.registeredAt);return `🎄 CAROLIA 2026 – REGISTRATION SUCCESSFUL!\n\nRegistration ID: ${lastRegistration.registrationId}\nRegistered On: ${registeredAtText}\nParticipant: ${d.participantName}\nParish: ${d.parishName}\nDiocese: ${d.diocese}\nResidence: ${d.country}, ${d.state}, ${d.district}\nWhatsApp: ${d.phone}\nCategory: Individual / Single Category\n\n🌐 Registration Website:\nhttps://carolia.ojilztag.com/\n\nPlease save your Registration ID.`;}
+function registrationShareText(){if(!lastRegistration)return '';const d=lastRegistration.details;const registeredAtText=new Intl.DateTimeFormat('en-IN',{dateStyle:'full',timeStyle:'short'}).format(lastRegistration.registeredAt);return `🎄 CAROLIA 2026 – REGISTRATION SUCCESSFUL!\n\nRegistration ID: ${lastRegistration.registrationId}\nRegistered On: ${registeredAtText}\nParticipant: ${d.participantName}\nParish: ${d.parishName}\nDiocese: ${d.diocese}\nResidence: ${d.country}, ${d.state}, ${d.district}\nWhatsApp: ${d.phone}\nCategory: Individual / Single Category\n\n🔎 Check Registration Status:\nhttps://carolia.ojilztag.com/#registration-status\n\nPlease save your Registration ID.`;}
 shareRegistration.addEventListener('click',async()=>{
   if(!lastRegistration)return;
   const text=registrationShareText();
