@@ -230,8 +230,17 @@ main{max-width:1320px}
 @media(max-width:760px){#organizers .organizer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){#organizers .organizer-grid{grid-template-columns:1fr;gap:14px}#organizers .organizer-card{padding:22px 18px}}
 
-/* International phone selector — styled to match CAROLIA registration form */
-.phone-field-wrap{width:100%}.iti{width:100%;display:block}.iti input#phone{width:100%;padding-left:95px!important;min-height:52px}.iti__country-list{z-index:1200;max-width:min(360px,calc(100vw - 48px));border:1px solid #d7d9d2;border-radius:12px;box-shadow:0 12px 32px #172a2720}.iti__search-input{width:calc(100% - 16px)!important;margin:8px;padding:10px!important;border:1px solid #d7d9d2!important;border-radius:8px!important}.iti__selected-country{border-radius:10px 0 0 10px}.iti__selected-country:hover,.iti__selected-country:focus{background:#f3f7f4}.iti__country.iti__highlight{background:#f3f7f4}
+/* International phone selector — refined spacing and clean focus styling */
+.phone-field-wrap,.international-phone-field{width:100%}
+.iti{width:100%;display:block}
+.iti input#phone{width:100%;padding-left:95px!important;min-height:52px}
+.iti input#phone:focus{outline:0;box-shadow:none;border-color:#0b7950}
+.iti__country-list{z-index:1200;max-width:min(360px,calc(100vw - 48px));margin-top:10px!important;padding:10px 0 6px;border:1px solid #d7d9d2;border-radius:12px;box-shadow:0 12px 32px #172a2720}
+.iti__search-input{display:block;width:calc(100% - 24px)!important;margin:4px 12px 14px!important;padding:12px 14px!important;min-height:48px;border:1px solid #d7d9d2!important;border-radius:9px!important;box-sizing:border-box}
+.iti__selected-country{border-radius:10px 0 0 10px}
+.iti__selected-country:hover,.iti__selected-country:focus{background:#f3f7f4}
+.iti__selected-dial-code{margin-left:8px;margin-right:9px}
+.iti__country.iti__highlight{background:#f3f7f4}
 </style>
 <script>
 (function(){try{const u=new URL(window.location.href);if(u.searchParams.get("utm_source")==="chatgpt.com"){u.searchParams.delete("utm_source");window.history.replaceState({},document.title,u.pathname+u.search+u.hash);}}catch(e){}})();
@@ -438,7 +447,7 @@ main:has(>#contact.contact-notice){padding-bottom:12px!important}
 <div><label for="country">Current Country of Residence | നിലവിലെ താമസരാജ്യം *</label><input id="country" name="country" type="text" required maxlength="100" autocomplete="country-name" placeholder="Type your country name"><div class="field-help">Type your country of residence. Example: India.</div></div>
 <div><label for="state">Current State / Province | സംസ്ഥാനം / പ്രവിശ്യ *</label><input id="state" name="state" required maxlength="100" placeholder="Enter state or province"></div>
 <div><label for="district">Current District / Region | ജില്ല / പ്രദേശം *</label><input id="district" name="district" required maxlength="100" placeholder="Enter district or region"></div>
-<div class="full"><label for="phone">Mobile Number (WhatsApp) | മൊബൈൽ നമ്പർ *</label><div class="international-phone-field"><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="Select country and enter mobile number"><input id="dialCode" name="dialCode" type="hidden" value="+91"></div><span class="field-note">Choose your country flag and calling code, then enter your mobile number.</span></div>
+<div class="full"><label for="phone">Mobile Number (WhatsApp) | മൊബൈൽ നമ്പർ *</label><div class="international-phone-field"><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="Select country and enter mobile number"><input id="dialCode" name="dialCode" type="hidden" value="+91"></div></div>
 <div class="full"><label>Competition Category | മത്സര വിഭാഗം</label><input id="competitionCategory" name="competitionCategory" value="Individual / Single Category" readonly></div>
 <div class="full check"><input id="rulesAccepted" type="checkbox" required><label for="rulesAccepted">I have read and agree to the competition rules | മത്സര നിബന്ധനകൾ വായിച്ച് അംഗീകരിക്കുന്നു. *</label></div>
 <div class="full"><button id="submit" type="submit">Submit Registration | രജിസ്റ്റർ ചെയ്യുക <span aria-hidden="true">→</span></button><div id="status" class="status" role="status" aria-live="polite"></div></div>
