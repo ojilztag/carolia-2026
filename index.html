@@ -481,6 +481,7 @@ main:has(>#contact.contact-notice){padding-bottom:12px!important}
   </div>
 </div>
 <div class="page-float-controls" aria-label="Page navigation"><button type="button" id="scrollTopButton" aria-label="Scroll to top" title="Scroll to top">↑</button><button type="button" id="scrollBottomButton" aria-label="Scroll to bottom" title="Scroll to bottom">↓</button></div><footer><strong>CAROLIA 2026</strong><br>Online Christmas Carol Singing Competition<br>Presented by Mathruvedhi Teams<br><span>Digital Support: <a href="https://digital.ojilztag.com" target="_blank" rel="noopener noreferrer" aria-label="OJILZTAG.COM digital support">OJILZTAG.COM</a></span></footer>
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.10.5/build/js/intlTelInput.min.js"></script>
 <script>
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyBvLcC0dY05Q1Ntd9f_KpiQMoLCjId-y14PQTJgoqnY56eFjJpauYg0nCfcoVHpQDdRg/exec";
 const form=document.getElementById("form"),country=document.getElementById("country"),dialCode=document.getElementById("dialCode"),state=document.getElementById("state"),district=document.getElementById("district"),status=document.getElementById("status"),submit=document.getElementById("submit");
@@ -608,7 +609,6 @@ siteNav.addEventListener("click",event=>{if(event.target.closest("a"))closeSiteM
 window.addEventListener("resize",()=>{if(window.innerWidth>760)closeSiteMenu();});
 document.addEventListener("keydown",event=>{if(event.key==="Escape")closeSiteMenu();});document.getElementById("scrollTopButton").addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));document.getElementById("scrollBottomButton").addEventListener("click",()=>window.scrollTo({top:document.documentElement.scrollHeight,behavior:"smooth"}));
 </script>
-<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.10.5/build/js/intlTelInput.min.js"></script>
 <script src="notices-data.js"></script>
 <script>
 /* Build the homepage scrolling ticker from the same source as notices.html. */
