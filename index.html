@@ -229,6 +229,9 @@ main{max-width:1320px}
 #organizers .organizer-card .organizer-phone:hover{background:#f1d58a}
 @media(max-width:760px){#organizers .organizer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){#organizers .organizer-grid{grid-template-columns:1fr;gap:14px}#organizers .organizer-card{padding:22px 18px}}
+
+/* International phone selector — styled to match CAROLIA registration form */
+.phone-field-wrap{width:100%}.iti{width:100%;display:block}.iti input#phone{width:100%;padding-left:95px!important;min-height:52px}.iti__country-list{z-index:1200;max-width:min(360px,calc(100vw - 48px));border:1px solid #d7d9d2;border-radius:12px;box-shadow:0 12px 32px #172a2720}.iti__search-input{width:calc(100% - 16px)!important;margin:8px;padding:10px!important;border:1px solid #d7d9d2!important;border-radius:8px!important}.iti__selected-country{border-radius:10px 0 0 10px}.iti__selected-country:hover,.iti__selected-country:focus{background:#f3f7f4}.iti__country.iti__highlight{background:#f3f7f4}
 </style>
 <script>
 (function(){try{const u=new URL(window.location.href);if(u.searchParams.get("utm_source")==="chatgpt.com"){u.searchParams.delete("utm_source");window.history.replaceState({},document.title,u.pathname+u.search+u.hash);}}catch(e){}})();
@@ -291,6 +294,7 @@ header{background:radial-gradient(ellipse at 50% 0%,#b43a34 0%,#751323 58%,#2607
 header:after{content:"✦  ❄  ✧  🎄  ✧  ❄  ✦";color:#ffe6a0}
 body:before{background:radial-gradient(circle at 8% 12%,#ffe6a655,transparent 24%),radial-gradient(circle at 92% 35%,#e8b9a344,transparent 28%),linear-gradient(180deg,#fffaf1,#f6e5c5)}
 </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.10.5/build/css/intlTelInput.css">
 
 <style>
 /* Clear, spacious closing contact section without embedded contact details */
@@ -434,7 +438,7 @@ main:has(>#contact.contact-notice){padding-bottom:12px!important}
 <div><label for="country">Current Country of Residence | നിലവിലെ താമസരാജ്യം *</label><input id="country" name="country" type="text" required maxlength="100" autocomplete="country-name" placeholder="Type your country name"><div class="field-help">Type your country of residence. Example: India.</div></div>
 <div><label for="state">Current State / Province | സംസ്ഥാനം / പ്രവിശ്യ *</label><input id="state" name="state" required maxlength="100" placeholder="Enter state or province"></div>
 <div><label for="district">Current District / Region | ജില്ല / പ്രദേശം *</label><input id="district" name="district" required maxlength="100" placeholder="Enter district or region"></div>
-<div><label for="dialCode">Country Calling Code | രാജ്യത്തിന്റെ കോഡ് *</label><input id="dialCode" name="dialCode" type="text" inputmode="tel" autocomplete="tel-country-code" required maxlength="5" pattern="\+[1-9][0-9]{0,3}" placeholder="If India? +91"><span class="field-note">Type your country calling code. Example: India +91.</span></div><div><label for="phone">Local Mobile Number (WhatsApp) | മൊബൈൽ നമ്പർ *</label><input id="phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" required minlength="5" maxlength="15" pattern="[0-9]{5,15}" placeholder="Enter local number only"><span class="field-note">Do not type the country code again. Enter local digits only.</span></div>
+<div class="full"><label for="phone">Mobile Number (WhatsApp) | മൊബൈൽ നമ്പർ *</label><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="Select country and enter mobile number"><input id="dialCode" name="dialCode" type="hidden" value="+91"><span class="field-note">Choose your country flag and calling code, then enter your mobile number.</span></div>
 <div class="full"><label>Competition Category | മത്സര വിഭാഗം</label><input id="competitionCategory" name="competitionCategory" value="Individual / Single Category" readonly></div>
 <div class="full check"><input id="rulesAccepted" type="checkbox" required><label for="rulesAccepted">I have read and agree to the competition rules | മത്സര നിബന്ധനകൾ വായിച്ച് അംഗീകരിക്കുന്നു. *</label></div>
 <div class="full"><button id="submit" type="submit">Submit Registration | രജിസ്റ്റർ ചെയ്യുക <span aria-hidden="true">→</span></button><div id="status" class="status" role="status" aria-live="polite"></div></div>
@@ -499,6 +503,26 @@ function finishPhoneConfirmation(accepted){
 document.getElementById("confirmPhoneSubmit").addEventListener("click",()=>finishPhoneConfirmation(true));
 document.getElementById("editPhoneDetails").addEventListener("click",()=>finishPhoneConfirmation(false));
 phoneConfirmModal.addEventListener("click",e=>{if(e.target===phoneConfirmModal)finishPhoneConfirmation(false);});
+
+
+// International phone selector: all supported countries, searchable list, India default.
+const phoneInput=document.getElementById("phone");
+const iti=window.intlTelInput(phoneInput,{
+  initialCountry:"in",
+  separateDialCode:true,
+  nationalMode:true,
+  countrySearch:true,
+  allowDropdown:true,
+  autoPlaceholder:"polite",
+  loadUtils:()=>import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.10.5/build/js/utils.js")
+});
+function syncInternationalPhone(){
+  const selected=iti.getSelectedCountryData();
+  dialCode.value=selected&&selected.dialCode?("+"+selected.dialCode):"";
+}
+phoneInput.addEventListener("countrychange",syncInternationalPhone);
+phoneInput.addEventListener("input",()=>{phoneInput.setCustomValidity("");});
+syncInternationalPhone();
 
 const COUNTRY_DIALS=[
 ["India","+91"],["United Arab Emirates","+971"],["Saudi Arabia","+966"],["Qatar","+974"],["Kuwait","+965"],["Oman","+968"],["Bahrain","+973"],["United Kingdom","+44"],["United States","+1"],["Canada","+1"],["Australia","+61"],["New Zealand","+64"],["Singapore","+65"],["Malaysia","+60"],["Sri Lanka","+94"],["Pakistan","+92"],["Bangladesh","+880"],["Nepal","+977"],["Maldives","+960"],["Ireland","+353"],["Germany","+49"],["France","+33"],["Italy","+39"],["Spain","+34"],["Portugal","+351"],["Netherlands","+31"],["Belgium","+32"],["Switzerland","+41"],["Austria","+43"],["Sweden","+46"],["Norway","+47"],["Denmark","+45"],["Finland","+358"],["South Africa","+27"],["Nigeria","+234"],["Kenya","+254"],["Uganda","+256"],["Tanzania","+255"],["Ghana","+233"],["Egypt","+20"],["Japan","+81"],["South Korea","+82"],["China","+86"],["Hong Kong","+852"],["Thailand","+66"],["Indonesia","+62"],["Philippines","+63"],["Vietnam","+84"],["Brazil","+55"],["Mexico","+52"],["Argentina","+54"],["Turkey","+90"],["Israel","+972"],["Jordan","+962"],["Lebanon","+961"],["Iraq","+964"],["Iran","+98"],["Russia","+7"],["Ukraine","+380"],["Poland","+48"],["Greece","+30"],["Romania","+40"],["Czechia","+420"],["Hungary","+36"],["Iceland","+354"],["Cyprus","+357"],["Malta","+356"],["Luxembourg","+352"],["Afghanistan","+93"],["Algeria","+213"],["Angola","+244"],["Armenia","+374"],["Azerbaijan","+994"],["Bhutan","+975"],["Brunei","+673"],["Cambodia","+855"],["Chile","+56"],["Colombia","+57"],["Costa Rica","+506"],["Ethiopia","+251"],["Fiji","+679"],["Georgia","+995"],["Jamaica","+1"],["Kazakhstan","+7"],["Mauritius","+230"],["Morocco","+212"],["Myanmar","+95"],["Panama","+507"],["Peru","+51"],["Seychelles","+248"],["Sudan","+249"],["Taiwan","+886"],["Uzbekistan","+998"],["Zimbabwe","+263"]
@@ -565,7 +589,7 @@ statusLookupForm.addEventListener("submit",e=>{
 });
 
 form.addEventListener("submit",async e=>{e.preventDefault();status.className="status";if(SCRIPT_URL.startsWith("PASTE_")){status.className="status error";status.textContent="The registration form is not connected yet. Please contact the organizers.";return}
-const localPhone=form.phone.value.replace(/\D/g,"");const callingCode=dialCode.value.trim();if(!country.value.trim()||!callingCode||!/^\+[1-9]\d{0,3}$/.test(callingCode)){status.className="status error";status.textContent="Select a valid country and country calling code before submitting.";return;}if(localPhone.length<5||localPhone.length>15){status.className="status error";status.textContent="Enter a valid local mobile number.";return;}const details={participantName:form.participantName.value.trim(),parishName:form.parishName.value.trim(),diocese:form.diocese.value.trim(),country:country.value,state:state.value.trim(),district:district.value.trim(),phone:callingCode+localPhone,countryCode:callingCode,localPhone:localPhone,competitionCategory:"Individual / Single Category",rulesAccepted:document.getElementById("rulesAccepted").checked};
+const localPhone=form.phone.value.replace(/\D/g,"");const callingCode=dialCode.value.trim();if(!country.value.trim()){status.className="status error";status.textContent="Enter your current country of residence.";return;}if(!iti.isValidNumber()){status.className="status error";status.textContent="Enter a valid mobile number for the selected country.";phoneInput.focus();return;}const internationalPhone=iti.getNumber();const selectedPhoneCountry=iti.getSelectedCountryData();const details={participantName:form.participantName.value.trim(),parishName:form.parishName.value.trim(),diocese:form.diocese.value.trim(),country:country.value,state:state.value.trim(),district:district.value.trim(),phone:internationalPhone,countryCode:callingCode,localPhone:localPhone,phoneCountry:selectedPhoneCountry.name||"",competitionCategory:"Individual / Single Category",rulesAccepted:document.getElementById("rulesAccepted").checked};
 if(!(await confirmPhoneDetails(details))){status.className="status error";status.textContent="Please review your country and WhatsApp number, then submit again.";return;}
 const token=crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+Math.random().toString(36).slice(2);activeToken=token;details.clientToken=token;
 submit.disabled=true;submit.textContent="Submitting...";
@@ -584,6 +608,7 @@ siteNav.addEventListener("click",event=>{if(event.target.closest("a"))closeSiteM
 window.addEventListener("resize",()=>{if(window.innerWidth>760)closeSiteMenu();});
 document.addEventListener("keydown",event=>{if(event.key==="Escape")closeSiteMenu();});document.getElementById("scrollTopButton").addEventListener("click",()=>window.scrollTo({top:0,behavior:"smooth"}));document.getElementById("scrollBottomButton").addEventListener("click",()=>window.scrollTo({top:document.documentElement.scrollHeight,behavior:"smooth"}));
 </script>
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.10.5/build/js/intlTelInput.min.js"></script>
 <script src="notices-data.js"></script>
 <script>
 /* Build the homepage scrolling ticker from the same source as notices.html. */
