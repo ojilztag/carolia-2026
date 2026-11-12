@@ -241,6 +241,15 @@ main{max-width:1320px}
 .iti__selected-country:hover,.iti__selected-country:focus{background:#f3f7f4}
 .iti__selected-dial-code{margin-left:8px;margin-right:9px}
 .iti__country.iti__highlight{background:#f3f7f4}
+/* Search field: text only, no magnifier icon or decorative underline */
+.iti__search-icon,.iti__search-icon svg,.iti__search-input::before,.iti__search-input::after{display:none!important;content:none!important}
+.iti__search-input{background-image:none!important;text-indent:0!important}
+.iti__search-input:focus{outline:none!important;box-shadow:none!important;border-color:#d7d9d2!important}
+/* Remove the stray green/blue line below the phone control and dial code */
+.iti,.iti:before,.iti:after,.iti__tel-input,.iti__selected-country,.iti__selected-country-primary,.iti__selected-dial-code{border-bottom:0!important;box-shadow:none!important}
+.iti input#phone,.iti input#phone:focus{border-bottom:1px solid #d7d9d2!important;box-shadow:none!important;outline:none!important}
+.iti__selected-country:before,.iti__selected-country:after,.iti__selected-country-primary:before,.iti__selected-country-primary:after{display:none!important;content:none!important}
+
 </style>
 <script>
 (function(){try{const u=new URL(window.location.href);if(u.searchParams.get("utm_source")==="chatgpt.com"){u.searchParams.delete("utm_source");window.history.replaceState({},document.title,u.pathname+u.search+u.hash);}}catch(e){}})();
