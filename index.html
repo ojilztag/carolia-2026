@@ -233,6 +233,7 @@ main{max-width:1320px}
 @media(max-width:760px){#organizers .organizer-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:520px){#organizers .organizer-grid{grid-template-columns:1fr;gap:14px}#organizers .organizer-card{padding:22px 18px}}
 
+.phone-country-hint{display:block;margin:7px 0 0;color:#6b6258;font-size:.82rem;line-height:1.5}
 /* International phone selector — refined spacing and clean focus styling */
 .phone-field-wrap,.international-phone-field{width:100%}
 .iti{width:100%;display:block}
@@ -459,7 +460,7 @@ main:has(>#contact.contact-notice){padding-bottom:12px!important}
 <div><label for="country">Current Country of Residence | നിലവിലെ താമസരാജ്യം *</label><input id="country" name="country" type="text" required maxlength="100" autocomplete="country-name" placeholder="Type your country name"><div class="field-help">Type your country of residence. Example: India.</div></div>
 <div><label for="state">Current State / Province | സംസ്ഥാനം / പ്രവിശ്യ *</label><input id="state" name="state" required maxlength="100" placeholder="Enter state or province"></div>
 <div><label for="district">Current District / Region | ജില്ല / പ്രദേശം *</label><input id="district" name="district" required maxlength="100" placeholder="Enter district or region"></div>
-<div class="full"><label for="phone">Mobile Number (WhatsApp) | മൊബൈൽ നമ്പർ *</label><div class="international-phone-field"><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="Select country and enter mobile number"><input id="dialCode" name="dialCode" type="hidden" value="+91"></div></div>
+<div class="full"><label for="phone">Mobile Number (WhatsApp) | മൊബൈൽ നമ്പർ *</label><div class="international-phone-field"><input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" required placeholder="Choose country, then enter mobile number"><input id="dialCode" name="dialCode" type="hidden" value="+91"></div><small class="phone-country-hint">India (+91) is selected by default. Tap the flag to choose your country before entering your number. | ആദ്യം ഫ്ലാഗ് അമർത്തി രാജ്യം തിരഞ്ഞെടുക്കാം.</small></div>
 <div class="full"><label>Competition Category | മത്സര വിഭാഗം</label><input id="competitionCategory" name="competitionCategory" value="Individual / Single Category" readonly></div>
 <div class="full check"><input id="rulesAccepted" type="checkbox" required><label for="rulesAccepted">I have read and agree to the competition rules | മത്സര നിബന്ധനകൾ വായിച്ച് അംഗീകരിക്കുന്നു. *</label></div>
 <div class="full"><button id="submit" type="submit">Submit Registration | രജിസ്റ്റർ ചെയ്യുക <span aria-hidden="true">→</span></button><div id="status" class="status" role="status" aria-live="polite"></div></div>
@@ -531,11 +532,13 @@ phoneConfirmModal.addEventListener("click",e=>{if(e.target===phoneConfirmModal)f
 const phoneInput=document.getElementById("phone");
 const iti=window.intlTelInput(phoneInput,{
   initialCountry:"in",
+  countryOrder:["in"],
   separateDialCode:true,
   nationalMode:true,
   countrySearch:true,
   allowDropdown:true,
   autoPlaceholder:"polite",
+  formatOnDisplay:true,
   loadUtils:()=>import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.10.5/build/js/utils.js")
 });
 function syncInternationalPhone(){
@@ -543,7 +546,16 @@ function syncInternationalPhone(){
   dialCode.value=selected&&selected.dialCode?("+"+selected.dialCode):"";
 }
 phoneInput.addEventListener("countrychange",syncInternationalPhone);
-phoneInput.addEventListener("input",()=>{phoneInput.setCustomValidity("");});
+phoneInput.addEventListener("input",()=>{
+  phoneInput.setCustomValidity("");
+  // If a participant pastes/types a full international number (e.g. +44...),
+  // automatically select the matching country instead of treating it as Indian/local digits.
+  const typed=phoneInput.value.trim();
+  if(typed.startsWith("+")){
+    iti.setNumber(typed);
+    syncInternationalPhone();
+  }
+});
 syncInternationalPhone();
 
 const COUNTRY_DIALS=[
